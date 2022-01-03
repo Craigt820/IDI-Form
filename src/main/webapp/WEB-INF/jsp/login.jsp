@@ -45,7 +45,7 @@
                 <div style="width: 842px;margin-left: 23px;margin-top: 40px;">
                     <div class="row" style="width: 662px;">
                         <div class="col" style="height: 461px;padding-right: 16px;padding-left: 16px;border-radius: 8px;border: 1px solid rgba(122,122,122,0.71);width: 882px;margin: 16px;">
-                            <form:form action="/authenticateTheUser" style="font-size: 13px;color: rgb(102,103,103);"  method="POST" class="form-horizontal">
+                            <form:form action="${pageContext.request.contextPath}/authenticateTheUser" style="font-size: 13px;color: rgb(102,103,103);"  method="POST" class="form-horizontal">
                                 <div style="padding: 4px;margin: 0px;padding-top: 65px;padding-right: 24px;padding-bottom: 0px;padding-left: 24px;border-bottom-color: rgba(102,103,103,0);background: rgba(255,255,255,0);">
 
                                     <div style="padding: 0px;margin: 0px;padding-top: 3px;"><label class="form-label"

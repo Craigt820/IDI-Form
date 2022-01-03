@@ -164,7 +164,7 @@
 <body style="height: 728px;">
 <nav class="navbar navbar-light navbar-expand-md my-auto"
      style="height: max;width: 256px;max-height: none;min-height: 729px;background: #003875;min-width: 256px;max-width: 256px;">
-    <form:form style="font-size: 13px;color: rgb(102,103,103);" action="/showGeneral" modelAttribute="specs">
+    <form:form style="font-size: 13px;color: rgb(102,103,103);" action="${pageContext.request.contextPath}/showGeneral" modelAttribute="specs">
 
     <div class="container-fluid">
         <div class="collapse navbar-collapse" id="navcol-1">

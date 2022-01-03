@@ -134,7 +134,7 @@
 <body style="height: 728px;">
 <nav class="navbar navbar-light navbar-expand-md my-auto"
      style="height: max;width: 256px;max-height: none;min-height: 729px;background: #003875;min-width: 256px;max-width: 256px;">
-    <form:form action="/complete" style="font-size: 13px;color: rgb(102,103,103);" modelAttribute="general">
+    <form:form action="${pageContext.request.contextPath}/complete" style="font-size: 13px;color: rgb(102,103,103);" modelAttribute="general">
 
         <div class="container-fluid">
             <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span
