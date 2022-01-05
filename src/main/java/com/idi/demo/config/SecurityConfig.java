@@ -1,4 +1,4 @@
-package com.idi.demo.controller;
+package com.idi.demo.config;
 
 
 import org.springframework.context.annotation.Configuration;

@@ -4,6 +4,7 @@
 <html lang="en" style="height: 762px;">
 
 <head>
+    <title>IDI-Forms - Login</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Untitled</title>
@@ -64,12 +65,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-10">
+                <div class="">
                     <c:if test="${param.error != null}">
-                        <label class="alert alert-danger col-xs-offset-1 col-xs-10">You entered a invalid entry!</label>
+                        <alert class="alert alert-danger" roll="alert">You entered a invalid entry!</alert>
                     </c:if>
                     <c:if test="${param.logout !=null}">
-                        <label class="alert alert-success col-xs-offset-10 col-xs-12">You've been logged out</label>
+                        <alert class="alert alert-success">You've been logged out</alert>
                     </c:if>
                 </div>
             </div>

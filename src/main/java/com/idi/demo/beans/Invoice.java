@@ -1,4 +1,4 @@
-package com.idi.demo.controller;
+package com.idi.demo.beans;
 
 
 import javax.persistence.*;
@@ -19,7 +19,9 @@ public class Invoice{
 	private String quantity;
 	@Column(name="cost")
 	private String cost;
-	
+	@Column(name="subtotal")
+	private String subtotal;
+
 	public int getId() {
 		return id;
 	}
@@ -49,6 +51,14 @@ public class Invoice{
 	}
 	public void setCost(String cost) {
 		this.cost = cost;
+	}
+
+	public String getSubtotal() {
+		return subtotal;
+	}
+
+	public void setSubtotal(String subtotal) {
+		this.subtotal = subtotal;
 	}
 
 	@Override

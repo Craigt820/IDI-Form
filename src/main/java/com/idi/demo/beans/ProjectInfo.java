@@ -1,4 +1,4 @@
-package com.idi.demo.controller;
+package com.idi.demo.beans;
 
 
 import org.springframework.web.multipart.MultipartFile;
@@ -25,7 +25,6 @@ public class ProjectInfo implements Serializable{
 	private String pName;
 	@Transient
     private MultipartFile[] pManifest;
-
 	@Column(name="sampleDate")
 	private String sampleDate;
 	@Column(name="ppBlanks")

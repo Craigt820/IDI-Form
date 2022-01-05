@@ -7,20 +7,22 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Untitled</title>
+    <title>IDI-Forms - Project Specs</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alata&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito+Sans&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tauri&amp;display=swap">
     <link rel="stylesheet" href="assets/css/styles.css">
-    <!-- Reference Bootstrap files -->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+    <script src="/js/Utils.js"></script>
 
     <style>
+
+        .table {
+            font-size:14px;
+        }
+
         .error {
             color: red;
             font-size: 12px;
@@ -29,7 +31,6 @@
 
         .btn-secondary {
             padding: 0px;
-            padding-left: 0;
             margin-left: 8px;
             width: 130px;
             height: 38px;
@@ -41,16 +42,25 @@
             background: rgb(182, 24, 16);
         }
 
+        .table td, .table th.
         .btn, btn-primary {
-            font-size: 14px;
-        }
-
-        .table td, .table th {
             font-size: 14px;
         }
 
         .form-control {
             font-size: 13px;
+        }
+
+        .tableID .td {
+            width: 2px;
+            margin: 0px;
+        }
+
+        .line_item {
+            width: 350px;
+            padding: 0px 0px 0px 8px;
+            height: 36px;
+            textAlign: "left";
         }
     </style>
 
@@ -71,11 +81,13 @@
             item.name = "item";
             item.style.height = "36px";
             item.classList.add('form-control');
-            item.style.width = "320px";
+            item.classList.add('line_item');
+            item.style.width = "300px";
             item.style.textAlign = "left";
             cell1.appendChild(item);
 
             var cell2 = row.insertCell(1);
+
             var dpi = document.createElement("select");
             dpi.name = "dpi";
             var dpis = ${dpis};
@@ -88,7 +100,7 @@
             }
 
             dpi.classList.add('form-select');
-            dpi.style.width = "124";
+            dpi.style.width = "130px";
             dpi.style.textAlign = "left";
             cell2.appendChild(dpi);
 
@@ -106,7 +118,7 @@
                 format.add(option);
             }
 
-            format.style.width = "124";
+            format.style.width = "130px";
             format.classList.add('form-select');
             format.style.textAlign = "left";
             cell3.appendChild(format);
@@ -137,24 +149,14 @@
             action.style.width = "140px";
             action.textContent = "Remove";
             action.addEventListener("click", function () {
-                remove(action);
+                removeRow(action,'tableBorder');
             });
 
             cell5.appendChild(action);
 
-            let height = $('.tableBorder').height();
-            $('.tableBorder').height(height + 60);
+            addRowAdjHelper('tableBorder');
         }
 
-        function remove(element) {
-            /* alert("row" + element.parentNode.parentNode.rowIndex +
-                        " - column" + element.parentNode.cellIndex);*/
-            //Remove the row node
-            element.parentNode.parentNode.remove();
-            //Adjust tableBorder size after removal
-            let height = $('.tableBorder').height();
-            $('.tableBorder').height(height - 40);
-        }
 
     </script>
 
@@ -164,7 +166,8 @@
 <body style="height: 728px;">
 <nav class="navbar navbar-light navbar-expand-md my-auto"
      style="height: max;width: 256px;max-height: none;min-height: 729px;background: #003875;min-width: 256px;max-width: 256px;">
-    <form:form style="font-size: 13px;color: rgb(102,103,103);" action="${pageContext.request.contextPath}/showGeneral" modelAttribute="specs">
+    <form:form style="font-size: 13px;color: rgb(102,103,103);" action="${pageContext.request.contextPath}/showGeneral"
+               modelAttribute="specs">
 
     <div class="container-fluid">
         <div class="collapse navbar-collapse" id="navcol-1">
@@ -227,22 +230,23 @@
                                                                                     path="specsList[${status.index}].id"
                                                                                     value="${spec.id}"/>
                                                                             <tr>
-                                                                                <td><form:input
+                                                                                <td style="width:30px;"><form:input
                                                                                         path="specsList[${status.index}].name"
-                                                                                        style="height:36px"
-                                                                                        class="form-control"
+                                                                                        style="height:36px;width:300px;"
+                                                                                        class="form-control line_item"
                                                                                         value="${spec.name}"
                                                                                         id="${spec.name}"/>
-                                                                                <td>
+                                                                                <td style="width:30px">
                                                                                     <form:select
+                                                                                            cssStyle="width:130px"
                                                                                             id="${spec.name}${status.index}dpi"
                                                                                             cssClass="form-select"
                                                                                             path="specsList[${status.index}].dpi_id.name">
-
                                                                                         <form:options items="${dpis}"/>
                                                                                     </form:select>
-                                                                                <td>
+                                                                                <td style="width:30px">
                                                                                     <form:select
+                                                                                            cssStyle="width:130px"
                                                                                             id="${spec.name}${status.index}format"
                                                                                             cssClass="form-select"
                                                                                             path="specsList[${status.index}].format_id.name">
@@ -250,7 +254,8 @@
                                                                                                 items="${formats}"/>
 
                                                                                     </form:select>
-                                                                                <td><form:select
+                                                                                <td style="width:30px"><form:select
+                                                                                        cssStyle="width:130px"
                                                                                         id="${spec.name}${status.index}mode"
                                                                                         cssClass="form-select"
                                                                                         path="specsList[${status.index}].mode_id.name">
@@ -313,13 +318,7 @@
 </body>
 
 <script>
-    var projects = document.getElementById('tableID');
-    var pLen = projects.rows.length;
-    if (pLen == 1) {
-        $('.tableBorder').height((250));
-    } else {
-        $('.tableBorder').height((pLen * 100) + 50);
-    }
+    tableResize('.tableID', '.tableBorder');
 
 </script>
 

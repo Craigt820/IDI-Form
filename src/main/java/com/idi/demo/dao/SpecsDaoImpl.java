@@ -1,5 +1,6 @@
-package com.idi.demo.controller;
+package com.idi.demo.dao;
 
+import com.idi.demo.beans.Specs;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;

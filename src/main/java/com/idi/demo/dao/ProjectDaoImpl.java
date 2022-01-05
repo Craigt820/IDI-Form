@@ -1,8 +1,7 @@
-package com.idi.demo.controller;
+package com.idi.demo.dao;
 
+import com.idi.demo.beans.ProjectInfo;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -13,7 +12,7 @@ import java.util.List;
 
 
 @Repository
-public class ProjectDaoImpl implements com.idi.demo.controller.ProjectDao{
+public class ProjectDaoImpl implements ProjectDao {
 	
 	@Autowired
 	public ProjectDaoImpl(EntityManager entityManager) {

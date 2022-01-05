@@ -11,9 +11,14 @@ package com.idi.demo.controller;
 //import org.hibernate.SessionFactory;
 
 //import com.oracle.wls.shaded.org.apache.bcel.generic.IF_ACMPEQ;
+
+import com.idi.demo.beans.*;
+import com.idi.demo.dao.*;
+import com.idi.demo.services.ProjectService;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.lang.Nullable;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -135,8 +140,10 @@ public class Controller {
         return "projInfo";
     }
 
+
+    @Transactional
     @RequestMapping("/showProjSpecs")
-    public String showSpecs(@Valid @ModelAttribute(value = "projectinfo") ProjectInfo projectInfo, BindingResult result, @RequestParam(value = "pManifest", required = false) MultipartFile[] files, Model theModel) {
+    public String showSpecs(@Valid @Nullable @ModelAttribute(value = "projectinfo") ProjectInfo projectInfo, BindingResult result, @RequestParam(value = "pManifest", required = false) MultipartFile[] files, Model theModel) {
 
         formats = formatDao.getFormat();
         modes = modeDao.getModes();
@@ -157,7 +164,10 @@ public class Controller {
                             Files.createDirectories(projDir);
                         }
                         System.out.println(file.getOriginalFilename());
-                        Files.copy(file.getInputStream(), root.resolve(projectInfo.getpName() + "\\" + file.getOriginalFilename()));
+                        Path fileToCopy = root.resolve(projectInfo.getpName() + "\\" + file.getOriginalFilename());
+                        if (!fileToCopy.toFile().exists()) {
+                            Files.copy(file.getInputStream(), root.resolve(projectInfo.getpName() + "\\" + file.getOriginalFilename()));
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -176,33 +186,11 @@ public class Controller {
             } else {
                 theModel.addAttribute("specs", new SpecsList(specsDao.getSpecs(projinfo_id)));
                 //Update existing ProjectInfo
-                ProjectInfo info = session.get(ProjectInfo.class, projinfo_id);
-                info.setpName(projectInfo.getpName());
-                info.setSampleDate(projectInfo.getSampleDate());
-                info.setPpBlanks(projectInfo.getPpBlanks());
-                info.setPpOCR(projectInfo.getPpOCR());
-                info.setPpExtract(projectInfo.getPpExtract());
-                info.setPpBookmark(projectInfo.getPpBookmark());
-                info.setPpMeta(projectInfo.getPpMeta());
-                info.setPpLtech(projectInfo.getPpLtech());
-                info.setPpEmbed(projectInfo.getPpEmbed());
-                info.setPrepArc(projectInfo.getPrepArc());
-                info.setPprep(projectInfo.getPprep());
-                info.setpShred(projectInfo.getpShred());
-                info.setIndexReq(projectInfo.getIndexReq());
-                info.setpDelCD(projectInfo.getpDelCD());
-                info.setpDelFlash(projectInfo.getpDelFlash());
-                info.setpDelHDD(projectInfo.getpDelHDD());
-                info.setdDelFTP(projectInfo.getdDelFTP());
-                info.setdDelDFIt(projectInfo.getdDelDFIt());
-                info.setdDelWeb(projectInfo.getdDelWeb());
-                info.setdDelCloud(projectInfo.getdDelCloud());
-                info.setdDelDocubase(projectInfo.getdDelDocubase());
-                info.setRetUPS(projectInfo.getRetUPS());
-                info.setRetIDIVan(projectInfo.getRetIDIVan());
-                info.setDelNotes(projectInfo.getDelNotes());
-                session.update(info);
+                if (projectInfo.getId() != 0) {
+                    session.update(projectInfo);
+                }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -312,7 +300,7 @@ public class Controller {
 
     @Transactional
     @RequestMapping("/complete")
-    public String completeForm(@Valid @ModelAttribute("general") General general, @ModelAttribute("invoices") ArrayList<Invoice> invoices, BindingResult result, @RequestParam(value = "item", required = false) String[] item, @RequestParam(value = "quantity", required = false) String[] quantity, @RequestParam(value = "cost", required = false) String[] cost, ModelMap theModel) {
+    public String completeForm(@Valid @ModelAttribute("general") General general, @ModelAttribute("invoices") ArrayList<Invoice> invoices, BindingResult result, @RequestParam(value = "item", required = false) String[] item, @RequestParam(value = "quantity", required = false) String[] quantity, @RequestParam(value = "cost", required = false) String[] cost,@RequestParam(value = "subtotal", required = false) String[] subtotal, ModelMap theModel) {
         if (result.hasErrors()) {
             return "general";
         } else {
@@ -327,10 +315,11 @@ public class Controller {
                     invoice.setItem(item[i]);
                     invoice.setCost(cost[i]);
                     invoice.setQuantity(quantity[i]);
+                    invoice.setSubtotal(subtotal[i]);
                     invoice.setProj_id(projinfo_id);
                     general.getInvoices().add(invoice);
                 }
-                invoiceDao.setInvoices(projinfo_id,  general.getInvoices());
+                invoiceDao.setInvoices(projinfo_id, general.getInvoices());
             }
 
             if (general.getInvoices() != null) {

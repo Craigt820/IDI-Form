@@ -1,38 +1,39 @@
-package com.idi.demo.controller;
+package com.idi.demo.dao;
 
-
+import com.idi.demo.beans.Mode;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 
 @Repository
-public class GeneralDaoImpl implements GeneralDao {
+public class ModeDaoImpl implements ModeDao {
 
     //Direct Injection - looks into the config file and injects the bean
-
     private EntityManager entityManager;
 
     @Autowired
-    public GeneralDaoImpl(EntityManager entityManager) {
+    public ModeDaoImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
     @Transactional
     @Override
-    public General getGeneral(int id) {
-
+    public List<Mode> getModes() {
         Session session = entityManager.unwrap(Session.class);
+
         //Only query invoices that are from a certain Project
-        Query<General> query = session.createQuery("FROM General where proj_id=:param", General.class);
-        query.setParameter("param", id);
-        return (General) query.getResultList().stream().findFirst().orElse(null);
+        Query<Mode> query = session.createQuery("FROM Mode", Mode.class);
+//		System.out.println("Proj Info ID: " + id);
+        List<Mode> modes = query.getResultList();
+        return modes;
     }
+
 
 
 }

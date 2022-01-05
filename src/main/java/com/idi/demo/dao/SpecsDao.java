@@ -1,4 +1,6 @@
-package com.idi.demo.controller;
+package com.idi.demo.dao;
+
+import com.idi.demo.beans.Specs;
 
 import java.util.List;
 

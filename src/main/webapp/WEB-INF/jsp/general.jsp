@@ -4,9 +4,9 @@
 <html lang="en" style="height: 762px;">
 
 <head>
+    <title>IDI-Forms - General</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Untitled</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alata&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito+Sans&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tauri&amp;display=swap">
@@ -18,44 +18,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
-
-    <style>
-        .error {
-            color: red;
-            font-size: 12px;
-            padding-left: 8px;
-        }
-
-        .btn-secondary {
-            padding: 0px;
-            padding-left: 0;
-            margin-left: 8px;
-            width: 130px;
-            height: 36px;
-            background: rgb(132, 8, 0);
-            font-size: 14px;
-        }
-
-        .btn-secondary:hover {
-            background: rgb(182, 24, 16);
-        }
-
-        .btn, btn-primary {
-            font-size: 14px;
-        }
-
-        .table td, .table th {
-            font-size: 14px;
-        }
-
-        .form-control {
-            font-size: 13px;
-        }
-    </style>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <link rel="stylesheet" href="css/formsheet.css">
+    <script src="/js/Utils.js">
+     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 
     <script>
-
-
         function addRow(tableID) {
 
             var table = document.getElementById(tableID);
@@ -66,29 +36,36 @@
             var row = table.insertRow(rowCount);
 
             var cell1 = row.insertCell(0);
+            cell1.style.width = "30px";
             var item = document.createElement("input");
             item.type = "text";
             item.name = "item";
             item.classList.add('form-control');
-            item.style.width = "550px";
-            item.style.height = "36px";
-            item.style.textAlign = "left";
+            item.classList.add('line_item');
             cell1.appendChild(item);
 
-            var cell2 = row.insertCell(1);
+            var cost = document.createElement("input");
             var quantity = document.createElement("input");
+            var subTotal = document.createElement("input");
+
+            var cell2 = row.insertCell(1);
+            cell2.style.width = "30px";
             quantity.type = "text";
             quantity.name = "quantity";
             quantity.value = "0";
+            quantity.style.padding = "0px";
             quantity.classList.add('form-control');
             quantity.style.width = "100px";
             quantity.style.height = "36px";
             quantity.style.textAlign = "center";
+            quantity.onkeyup = function () {
+                subTotalFn(cost, quantity, subTotal)
+            }
 
             cell2.appendChild(quantity);
-
             var cell3 = row.insertCell(2);
-            var cost = document.createElement("input");
+            cell3.style.width = "30px";
+
             cost.type = "text";
             cost.name = "cost";
             cost.value = "0.0";
@@ -96,10 +73,24 @@
             cost.style.height = "36px";
             cost.classList.add('form-control');
             cost.style.textAlign = "center";
+            cost.onkeyup = function () {
+                subTotalFn(cost, quantity, subTotal)
+            }
             cell3.appendChild(cost);
 
-
             var cell4 = row.insertCell(3);
+            cell4.style.width = "30px";
+            subTotal.name = "subtotal";
+            subTotal.readOnly = true;
+            subTotal.style.height = "36px";
+            subTotal.style.width = "100px";
+            subTotal.value = "$0.00";
+            subTotal.classList.add("read_only_input");
+            subTotal.style.textAlign = "CENTER";
+            cell4.appendChild(subTotal);
+
+            var cell5 = row.insertCell(4);
+            cell5.style.width = "130px";
             var action = document.createElement("button");
             action.classList.add("btn", "btn-primary");
             action.classList.add("btn-secondary");
@@ -107,23 +98,18 @@
             action.style.width = "130px";
             action.textContent = "Remove";
             action.addEventListener("click", function () {
-                remove(action);
+                removeRow(action,'tableBorder');
             });
 
-            cell4.appendChild(action);
+            cell5.appendChild(action);
 
-            let height = $('.tableBorder').height();
-            $('.tableBorder').height(height + 60);
+            addRowAdjHelper('tableBorder');
         }
 
-        function remove(element) {
-            /* alert("row" + element.parentNode.parentNode.rowIndex +
-                        " - column" + element.parentNode.cellIndex);*/
-            //Remove the row node
-            element.parentNode.parentNode.remove();
-            //Adjust tableBorder size after removal
-            let height = $('.tableBorder').height();
-            $('.tableBorder').height(height - 40);
+        function subTotalFn(quantity, cost, subTotal) {
+            var newVal = (parseFloat(cost.value) * parseFloat(quantity.value)).toString();
+            subTotal.value = cost.value !== 0 && quantity.value !== 0 ? "$" + newVal : 0;
+            // alert(subTotal.textContent);
         }
 
     </script>
@@ -134,7 +120,8 @@
 <body style="height: 728px;">
 <nav class="navbar navbar-light navbar-expand-md my-auto"
      style="height: max;width: 256px;max-height: none;min-height: 729px;background: #003875;min-width: 256px;max-width: 256px;">
-    <form:form action="${pageContext.request.contextPath}/complete" style="font-size: 13px;color: rgb(102,103,103);" modelAttribute="general">
+    <form:form action="${pageContext.request.contextPath}/complete" style="font-size: 13px;color: rgb(102,103,103);"
+               modelAttribute="general">
 
         <div class="container-fluid">
             <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span
@@ -256,11 +243,12 @@
                                                                              style="padding: 0px;margin: 0px;margin-top: 10px;transform: translateY(-4px);margin-left: 8px;font-size: 16px;">
                                                                             <h4 class="card-title"
                                                                                 style="font-size: 13px;margin: 0px;padding: 0px;padding-bottom: 0px;color: rgb(247,247,247);">
-                                                                                Logistics</h4>
+                                                                                Dates</h4>
                                                                         </div>
                                                                         <div style="padding: 8px;margin: 0px;padding-top: 24px;">
                                                                             <label class="form-label"
-                                                                                   style="font-size: 12px;font-weight: bold;">Pick-up
+                                                                                   style="font-size: 12px;font-weight: bold;">Est.
+                                                                                Pick-up
                                                                                 Date</label><form:input
                                                                                 class="form-control" type="date"
                                                                                 path="puDate"/></div>
@@ -273,7 +261,8 @@
                                                                                 style="color: rgb(33,37,41);"/></div>
                                                                         <div style="padding: 8px;margin: 0px;padding-top: 16px;">
                                                                             <label class="form-label"
-                                                                                   style="font-size: 12px;font-weight: bold;">Completion
+                                                                                   style="font-size: 12px;font-weight: bold;">
+                                                                                Est. Completion
                                                                                 Date</label><form:input
                                                                                 class="form-control" type="date"
                                                                                 path="compDate"/></div>
@@ -310,7 +299,8 @@
                                                                                     style="font-size: 14px;">Bound</span><form:checkbox
                                                                                     class="float-end"
                                                                                     style="width: 16px;height: 16px;"
-                                                                                    path="pBound"/></div>
+                                                                                    path="pBound"/>
+                                                                            </div>
                                                                             <div><span
                                                                                     style="font-size: 14px;">Box</span><form:checkbox
                                                                                     class="float-end"
@@ -320,6 +310,11 @@
                                                                                         class="float-end"
                                                                                         style="width: 16px;height: 16px;"
                                                                                         path="plFormat"/></div>
+                                                                                <div><span
+                                                                                        style="font-size: 14px;">Hour</span><form:checkbox
+                                                                                        class="float-end"
+                                                                                        style="width: 16px;height: 16px;"
+                                                                                        path="pHour"/></div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -372,10 +367,13 @@
                                                                                 </th>
                                                                                 <th style="text-align: Center;">Cost
                                                                                 </th>
+                                                                                <th style="text-align: Center;">SubTotal
+                                                                                </th>
                                                                                 <th style="text-align: Center;">Action
                                                                                 </th>
                                                                             </tr>
                                                                             </thead>
+
                                                                             <c:forEach items="${invoices}" var="invoice"
                                                                                        varStatus="status">
                                                                                 <c:url var="remove"
@@ -390,13 +388,18 @@
                                                                                              path="invoices[${status.index}].proj_id"/>
 
                                                                                 <tr>
+                                                                                    <script>
+
+                                                                                    </script>
                                                                                     <td><form:input
                                                                                             path="invoices[${status.index}].item"
                                                                                             value="${invoice.item}"
-                                                                                            class="form-control"
-                                                                                            style="height:36px;text-align: Left; width:550px;"
-                                                                                            type="text"/>
+                                                                                            class="form-control invoice_item line_item"
+                                                                                            style="height:36px;text-align: Left;"
+                                                                                            type="text"
+                                                                                    />
                                                                                     </td>
+
                                                                                     <td><form:input class="form-control"
                                                                                                     value="${invoice.quantity}"
                                                                                                     path="invoices[${status.index}].quantity"
@@ -410,6 +413,14 @@
                                                                                             class="form-control"
                                                                                             style="height:36px;width:100px;text-align: Center"
                                                                                             type="text"/>
+                                                                                    </td>
+                                                                                    <td><form:input
+                                                                                            path="invoices[${status.index}].subtotal"
+                                                                                            value="${invoice.subtotal}"
+                                                                                            placeholder="$0.0"
+                                                                                            class="read_only_input"
+                                                                                            style="height:36px;width:100px;text-align:Center"
+                                                                                    />
                                                                                     </td>
                                                                                     <td>
                                                                                         <a style="padding-top:6px; width: 130px; height:36px"
@@ -432,6 +443,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
                                                 </div>
                                                 <div class="row"
                                                      style="height: 213px;padding-top: 0;margin-left: -12px;margin-top: 41px;">
@@ -448,7 +460,7 @@
                                     <div class="col-md-6" style="width: 60px;padding: 0px;padding-left: 565px;">
                                         <a class="btn btn-primary"
                                            style="width: 144px;background: rgb(20,62,125);" value="Previous"
-                                           href="showProjSpecs">Previous
+                                           href="${pageContext.request.contextPath}/showProjSpecs">Previous
                                         </a>
                                     </div>
                                 </div>
@@ -470,13 +482,6 @@
 
 </body>
 <script>
-    var projects = document.getElementById('invoiceTbl');
-    var pLen = projects.rows.length;
-    if (pLen == 1) {
-        $('.tableBorder').height((250));
-    } else {
-        $('.tableBorder').height((pLen * 100) + 50);
-    }
-
+    tableResize('.invoiceTbl', '.tableBorder');
 </script>
 </html>

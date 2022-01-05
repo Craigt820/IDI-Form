@@ -1,0 +1,50 @@
+
+.table {
+    font-size:14px;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+    padding-left: 8px;
+}
+
+.btn-secondary {
+    padding: 0px;
+    padding-left: 0;
+    margin-left: 8px;
+    width: 130px;
+    height: 36px;
+    background: rgb(132, 8, 0);
+    font-size: 14px;
+}
+
+.btn-secondary:hover {
+    background: rgb(182, 24, 16);
+}
+
+.btn, btn-primary {
+    font-size: 14px;
+}
+
+.table td, .table th {
+    font-size: 14px;
+}
+
+.read_only_input {
+    font-size:1em;
+    pointer-events: none;
+    border-color: transparent;
+    background-color: transparent;
+}
+
+.line_item {
+    width: 400px;
+    padding: 0px 0px 0px 8px;
+    height: 36px;
+    textAlign: "left";
+}
+
+.form-control {
+    font-size: 13px;
+}

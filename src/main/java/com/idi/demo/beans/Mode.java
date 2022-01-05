@@ -1,4 +1,4 @@
-package com.idi.demo.controller;
+package com.idi.demo.beans;
 
 import javax.persistence.*;
 

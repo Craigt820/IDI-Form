@@ -1,7 +1,7 @@
-package com.idi.demo.controller;
+package com.idi.demo.dao;
 
+import com.idi.demo.beans.Invoice;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -12,7 +12,7 @@ import java.util.List;
 
 
 @Repository
-public class InvoiceDaoImpl implements com.idi.demo.controller.InvoiceDao {
+public class InvoiceDaoImpl implements InvoiceDao {
 
 
     //Direct Injection - looks into the config file and injects the bean
@@ -25,22 +25,22 @@ public class InvoiceDaoImpl implements com.idi.demo.controller.InvoiceDao {
 
     @Transactional
     @Override
-    public List<com.idi.demo.controller.Invoice> getInvoices(int id) {
+    public List<Invoice> getInvoices(int id) {
         Session session = entityManager.unwrap(Session.class);
 
         //Only query invoices that are from a certain Project
-        Query<com.idi.demo.controller.Invoice> query = session.createQuery("FROM Invoice where proj_id=:param", com.idi.demo.controller.Invoice.class);
+        Query<Invoice> query = session.createQuery("FROM Invoice where proj_id=:param", Invoice.class);
         query.setParameter("param", id);
 //		System.out.println("Proj Info ID: " + id);
-        List<com.idi.demo.controller.Invoice> invoices = query.getResultList();
+        List<Invoice> invoices = query.getResultList();
         return invoices;
     }
 
     @Transactional
     @Override
-    public void setInvoices(int id, List<com.idi.demo.controller.Invoice> invoices) {
+    public void setInvoices(int id, List<Invoice> invoices) {
         Session session = entityManager.unwrap(Session.class);
-        for (com.idi.demo.controller.Invoice invoice : invoices) {
+        for (Invoice invoice : invoices) {
 //            invoice.setProj_id(id);
             session.saveOrUpdate(invoice);
         }

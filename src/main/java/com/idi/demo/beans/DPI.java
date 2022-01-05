@@ -1,11 +1,10 @@
-package com.idi.demo.controller;
-
+package com.idi.demo.beans;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "form_format")
-public class Format {
+@Table(name = "form_dpi")
+public class DPI {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")

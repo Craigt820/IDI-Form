@@ -1,7 +1,5 @@
-package com.idi.demo.controller;
+package com.idi.demo.beans;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 

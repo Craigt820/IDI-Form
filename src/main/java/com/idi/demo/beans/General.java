@@ -1,12 +1,8 @@
-package com.idi.demo.controller;
+package com.idi.demo.beans;
 
-
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,10 +34,8 @@ public class General {
 	@Column(name="cEmail")
 	@Pattern(regexp="\\w+@.+",message="Must be a valid email address!")
 	private String cEmail;
-
 	@Column(name="bAddress")
 	private String bAddress;
-
 	@Column(name="puDate")
 	private String puDate;
 	@Column(name="stDate")
@@ -56,6 +50,9 @@ public class General {
 	private Boolean pBox;
 	@Column(name="plFormat")
 	private Boolean plFormat;
+	@Column(name="pHour")
+	private Boolean pHour;
+
 	@Column(name="additNotes")
 	private String additNotes;
 
@@ -222,6 +219,13 @@ public class General {
 		this.plFormat = plFormat;
 	}
 
+	public Boolean getpHour() {
+		return pHour;
+	}
+
+	public void setpHour(Boolean pHour) {
+		this.pHour = pHour;
+	}
 
 	public String getAdditNotes() {
 		return additNotes;
